@@ -58,14 +58,16 @@ pipeline {
             }
         }
 
-        stage("Containerization") {
+        stage("Package and send to logistics") {
             steps {
-                echo "Packaging your application..."
-                sh '''
-                sudo docker build -t hellopipe:v1.${BUILD_NUMBER} .
-                sudo docker run -d --name hellopipe_${BUILD_NUMBER} -p ${PORT}:${PORT} -e PORT=${PORT} -e MONGO_URL=${MONGO_URL} -e JWT_SECRET=${JWT_SECRET} -e JWT_EXPIRES=${JWT_EXPIRES} \
-                hellopipe:v1.${BUILD_NUMBER}
-                '''
+                withCredentials([usernameColonPassword(credentialsId: 'docker_titas2003', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    echo "Packaging your application..."
+                    sh '''
+                    sudo docker build -t hellopipe:v1.${BUILD_NUMBER} .
+                    echo ${DOCKER_PASS} | docker login -u ${DOCKER_USER} --password-stdin
+                    sudo docker tag hellopipe:v1.${BUILD_NUMBER} ${DOCKER_USER}/hellopipe:v1.${BUILD_NUMBER}
+                    '''
+                }
             }
         }
     }
