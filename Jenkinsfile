@@ -66,6 +66,8 @@ pipeline {
                     sudo docker build -t hellopipe:v1.${BUILD_NUMBER} .
                     echo ${DOCKER_PASS} | docker login -u ${DOCKER_USER} --password-stdin
                     sudo docker tag hellopipe:v1.${BUILD_NUMBER} ${DOCKER_USER}/hellopipe:v1.${BUILD_NUMBER}
+                    sudo docker push ${DOCKER_USER}/hellopipe:v1.${BUILD_NUMBER}
+                    docker logout
                     '''
                 }
             }
