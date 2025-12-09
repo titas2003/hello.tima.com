@@ -60,7 +60,7 @@ pipeline {
 
         stage("Package and send to logistics") {
             steps {
-                withCredentials([usernameColonPassword(credentialsId: 'docker_titas2003', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                withCredentials([usernamePassword(credentialsId: 'docker_titas2003', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     echo "Packaging your application..."
                     sh '''
                     sudo docker build -t hellopipe:v1.${BUILD_NUMBER} .
