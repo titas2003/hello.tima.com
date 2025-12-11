@@ -67,7 +67,7 @@ pipeline {
                                 sshTransfer(
                                     sourceFiles: 'k8s/*.yaml',
                                     removePrefix: 'k8s',
-                                    remoteDirectory: '/home/devopsadmin',
+                                    remoteDirectory: '',
                                     execCommand: '''
                                         sed -i "s|IMAGE_REPLACE|titas2003/hellopipe:v1.${BUILD_NUMBER}|g" /home/devopsadmin/deployment.yaml
                                         kubectl apply -f /home/devopsadmin/deployment.yaml
