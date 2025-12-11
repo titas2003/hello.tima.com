@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hellopipe-deploy
+  labels:
+    app: hellopipe
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hellopipe
+  template:
+    metadata:
+      labels:
+        app: hellopipe
+    spec:
+      containers:
+        - name: hellopipe
+          image: IMAGE_REPLACE   # Replaced by Jenkins
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+            - name: MONGO_URL
+              value: "mongodb+srv://admin:admin@aws-dmo.bsoplpt.mongodb.net/practice-001"
+            - name: JWT_SECRET
+              value: "SECRET123"
+            - name: JWT_EXPIRES
+              value: "1h"
+          imagePullPolicy: Always
